@@ -16,7 +16,7 @@ subject_serializer = {
     "subject_id": fields.String,
     "name": fields.String,
     "description": fields.String,
-    "taught_by": fields.Nested(teacher_serializer),
+    "teacher": fields.Nested(teacher_serializer),
     "created_at": fields.DateTime(dt_format='rfc822'),
     "updated_at": fields.DateTime(dt_format='rfc822')
 }
