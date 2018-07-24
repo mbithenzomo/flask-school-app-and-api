@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import db
@@ -56,6 +58,9 @@ class Student(Person):
     major_id = db.Column(db.String, db.ForeignKey("subjects.subject_id"))
     minors = db.relationship("Subject", secondary=student_subject_table,
                              back_populates="minor_students")
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.now)
+
     __mapper_args__ = {
         "polymorphic_identity": "students",
     }
@@ -73,6 +78,9 @@ class Teacher(Person):
     staff_id = db.Column(db.String, unique=True, primary_key=True)
     subjects_taught = db.relationship("Subject", backref="teacher",
                                       lazy="dynamic")
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.now)
+
     __mapper_args__ = {
         "polymorphic_identity": "teachers",
     }
@@ -94,6 +102,8 @@ class Subject(db.Model):
     minor_students = db.relationship("Student",
                                      secondary=student_subject_table,
                                      back_populates="minors")
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.now)
 
     def __repr__(self):
         return "<Subject ID: {}>".format(self.subject_id)
