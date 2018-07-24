@@ -17,3 +17,4 @@ def create_app(configuration):
 
 app = create_app("development")
 api = Api(app=app, prefix="/api/v1")
+from app import views

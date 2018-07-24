@@ -58,7 +58,7 @@ def delete_resource(resource, **kwargs):
     Delete a resource permanently from the database.
     Arguments:
         kwargs["resource"]: The resource to be deleted.
-        kwargs["resource_type"]: The type of resource, i.e user, hospital, etc.
+        kwargs["resource_type"]: The type of resource, e.g student, teacher.
     """
 
     db.session.delete(resource)
@@ -89,7 +89,8 @@ def before_request():
     user registration, login and index.
     """
 
-    if request.endpoint not in ["userlogin", "userregister", "index"]:
+    if request.endpoint in ["studentlistapi", "studentapi", "teacherlistapi",
+                            "teacherapi", "subjectlistapi", "subjectapi"]:
         token = request.headers.get("Authorization")
         if token is not None:
             token_decode_response = User.decode_auth_token(token)
