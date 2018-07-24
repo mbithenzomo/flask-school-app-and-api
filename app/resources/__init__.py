@@ -18,6 +18,8 @@ def create_or_update_resource(**kwargs):
         kwargs["create"]: Flag to determine whether resource is being created.
         kwargs["resource_type"]: The type of resource, e.g student, teacher.
     """
+    db.session.add(kwargs["resource"])
+    db.session.commit()
     try:
         if kwargs["create"]:
             if kwargs["resource_type"] == "user":
@@ -26,18 +28,18 @@ def create_or_update_resource(**kwargs):
                     username=kwargs["username"]).first()
                 auth_token = user.generate_auth_token(user.id)
 
-                response = {"message": "You have successfully signed up.",
+                response = {"message": "You have successfully signed up",
                             "token": auth_token.decode()}
             else:
                 response = marshal(kwargs["resource"], kwargs["serializer"])
                 message = {"message": "You have successfully created a new " +
-                           kwargs["resource_type"] + "."}
+                           kwargs["resource_type"]}
                 response.update(message)
             return response, 201
         else:
             response = marshal(kwargs["resource"], kwargs["serializer"])
             message = {"message": "You have successfully edited the " +
-                       kwargs["resource_type"] + "."}
+                       kwargs["resource_type"]}
             response.update(message)
             return response
 
@@ -62,7 +64,7 @@ def delete_resource(resource, **kwargs):
     db.session.commit()
     return {"message": "You have successfully deleted the " +
             kwargs["resource_type"] + " with the following ID: " +
-            kwargs["id"] + "."}
+            kwargs["id"]}
 
 
 auth = HTTPBasicAuth()
