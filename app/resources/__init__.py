@@ -1,7 +1,10 @@
-from flask_restful import marshal
+from flask import g, jsonify, request
+
+from flask_httpauth import HTTPBasicAuth
+from flask_restful import Resource, marshal
 from sqlalchemy.exc import IntegrityError
 
-from app import db
+from app import app, db
 from app.models import User
 
 
@@ -60,3 +63,37 @@ def delete_resource(resource, **kwargs):
     return {"message": "You have successfully deleted the " +
             kwargs["resource_type"] + " with the following ID: " +
             kwargs["id"] + "."}
+
+
+auth = HTTPBasicAuth()
+
+
+@auth.error_handler
+def error_message(error=None):
+    """Returns an error message.
+    """
+
+    if not error:
+        error = "You are not authorized to access this resource."
+    return jsonify({
+        "error": error
+    }), 403
+
+
+@app.before_request
+def before_request():
+    """Validates token. Is run before all API requests apart from
+    user registration, login and index.
+    """
+
+    if request.endpoint not in ["userlogin", "userregister", "index"]:
+        token = request.headers.get("Authorization")
+        if token is not None:
+            token_decode_response = User.decode_auth_token(token)
+            try:
+                user = User.query.get(token_decode_response)
+                g.user = user
+            except:
+                return error_message(token_decode_response), 401
+        else:
+            return error_message("Please enter a token."), 401
