@@ -65,7 +65,7 @@ class TeacherListAPI(Resource):
         parser.add_argument(
             "email_address",
             required=True,
-            help="Please enter a email address.")
+            help="Please enter an email address.")
         parser.add_argument(
             "subjects_taught",
             help="Separate multiple subject IDs with a comma.")

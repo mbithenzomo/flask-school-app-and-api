@@ -35,6 +35,7 @@ class TestingConfig(Config):
 
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DATABASE_URI')
+    PRESERVE_CONTEXT_ON_EXCEPTION = False
 
 
 app_config = {

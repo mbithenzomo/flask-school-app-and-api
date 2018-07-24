@@ -14,17 +14,16 @@ class TestStudents(TestBase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("students", response.data.decode('utf-8'))
         output = json.loads(response.data.decode('utf-8'))
-        self.assertEqual("Jane", output["students"][0]["first_name"])
-        self.assertEqual("Doe", output["students"][0]["last_name"])
+        self.assertEqual("Hermione", output["students"][0]["first_name"])
+        self.assertEqual("Granger", output["students"][0]["last_name"])
 
     def test_create_student(self):
         """Test successful creation of student
         """
         self.student = {"student_id": "ST002",
-                        "first_name": "Ada",
-                        "last_name": "Lovelace",
-                        "email_address": "ada.lovelace@school.edu",
-                        "password": "pass1234"}
+                        "first_name": "Ginny",
+                        "last_name": "Weasley",
+                        "email_address": "ginny.weasley@hogwarts.edu"}
         response = self.app.post("/api/v1/students",
                                  data=self.student,
                                  headers=self.token)
@@ -39,9 +38,8 @@ class TestStudents(TestBase):
         """
 
         self.student = {"student_id": "ST002",
-                        "first_name": "Ada",
-                        "email_address": "ada.lovelace@school.edu",
-                        "password": "pass1234"}
+                        "first_name": "Luna",
+                        "email_address": "luna.lovegood@hogwarts.edu"}
         response = self.app.post("/api/v1/students",
                                  data=self.student,
                                  headers=self.token)
@@ -53,7 +51,7 @@ class TestStudents(TestBase):
 
 class TestStudent(TestBase):
     """
-    Test /students/<str:id> endpoint
+    Test /students/<string:id> endpoint
     """
 
     def test_get_student(self):
@@ -63,8 +61,8 @@ class TestStudent(TestBase):
         response = self.app.get("/api/v1/students/ST001", headers=self.token)
         self.assertEqual(response.status_code, 200)
         output = json.loads(response.data.decode('utf-8'))
-        self.assertEqual("Jane", output["first_name"])
-        self.assertEqual("Doe", output["last_name"])
+        self.assertEqual("Hermione", output["first_name"])
+        self.assertEqual("Granger", output["last_name"])
 
     def test_nonexistent_id(self):
         """
@@ -88,17 +86,17 @@ class TestStudent(TestBase):
                                 headers=self.token)
         self.assertEqual(response.status_code, 200)
         output = json.loads(response.data.decode('utf-8'))
-        self.assertEqual("You have successfully edited the student.",
+        self.assertEqual("You have successfully edited the student",
                          output["message"])
         self.assertEqual("New last name", output["last_name"])
-        self.assertEqual("Jane", output["first_name"])
+        self.assertEqual("Hermione", output["first_name"])
 
     def test_delete_student(self):
         """Test that one can delete a selected student.
         """
         response = self.app.delete("/api/v1/students/ST001",
-                                   headers=self.admin_token)
+                                   headers=self.token)
         self.assertEqual(response.status_code, 200)
         output = json.loads(response.data.decode('utf-8'))
         self.assertEqual(output, {"message": "You have successfully "
-                         "deleted the student with the following ID: ST001."})
+                         "deleted the student with the following ID: ST001"})

@@ -65,7 +65,7 @@ class StudentListAPI(Resource):
         parser.add_argument(
             "email_address",
             required=True,
-            help="Please enter a email address.")
+            help="Please enter an email address.")
         parser.add_argument(
             "major",
             help="Please enter only one subject ID.")

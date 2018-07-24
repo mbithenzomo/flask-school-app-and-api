@@ -14,17 +14,16 @@ class TestTeachers(TestBase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("teachers", response.data.decode('utf-8'))
         output = json.loads(response.data.decode('utf-8'))
-        self.assertEqual("Johnny", output["teachers"][0]["first_name"])
-        self.assertEqual("Walker", output["teachers"][0]["last_name"])
+        self.assertEqual("Minerva", output["teachers"][0]["first_name"])
+        self.assertEqual("McGonagall", output["teachers"][0]["last_name"])
 
     def test_create_teacher(self):
         """Test successful creation of teacher
         """
         self.teacher = {"teacher_id": "TC002",
-                        "first_name": "Grace",
-                        "last_name": "Hopper",
-                        "email_address": "grace.hopper@school.edu",
-                        "password": "pass1234"}
+                        "first_name": "Severus",
+                        "last_name": "Snape",
+                        "email_address": "severus.snape@hogwarts.edu"}
         response = self.app.post("/api/v1/teachers",
                                  data=self.teacher,
                                  headers=self.token)
@@ -39,9 +38,8 @@ class TestTeachers(TestBase):
         """
 
         self.teacher = {"teacher_id": "TC002",
-                        "first_name": "Grace",
-                        "last_name": "Hopper",
-                        "password": "pass1234"}
+                        "first_name": "Severus",
+                        "last_name": "Snape"}
         response = self.app.post("/api/v1/teachers",
                                  data=self.teacher,
                                  headers=self.token)
@@ -63,8 +61,8 @@ class TestTeacher(TestBase):
         response = self.app.get("/api/v1/teachers/TC001", headers=self.token)
         self.assertEqual(response.status_code, 200)
         output = json.loads(response.data.decode('utf-8'))
-        self.assertEqual("Johnny", output["first_name"])
-        self.assertEqual("Walker", output["last_name"])
+        self.assertEqual("Minerva", output["first_name"])
+        self.assertEqual("McGonagall", output["last_name"])
 
     def test_nonexistent_id(self):
         """
@@ -88,17 +86,17 @@ class TestTeacher(TestBase):
                                 headers=self.token)
         self.assertEqual(response.status_code, 200)
         output = json.loads(response.data.decode('utf-8'))
-        self.assertEqual("You have successfully edited the teacher.",
+        self.assertEqual("You have successfully edited the teacher",
                          output["message"])
         self.assertEqual("New first name", output["first_name"])
-        self.assertEqual("Walker", output["last_name"])
+        self.assertEqual("McGonagall", output["last_name"])
 
     def test_delete_teacher(self):
         """Test that one can delete a selected teacher.
         """
         response = self.app.delete("/api/v1/teachers/TC001",
-                                   headers=self.admin_token)
+                                   headers=self.token)
         self.assertEqual(response.status_code, 200)
         output = json.loads(response.data.decode('utf-8'))
         self.assertEqual(output, {"message": "You have successfully "
-                         "deleted the teacher with the following ID: TC001."})
+                         "deleted the teacher with the following ID: TC001"})
