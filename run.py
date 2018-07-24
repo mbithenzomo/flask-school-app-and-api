@@ -7,7 +7,7 @@ from app.resources.subjects import SubjectListAPI, SubjectAPI
 
 
 """ Defining the API endpoints """
-api.add_resource(Index, "/")
+api.add_resource(Index, "")
 api.add_resource(UserRegister, "/auth/register")
 api.add_resource(UserLogin, "/auth/login")
 api.add_resource(StudentListAPI, "/students")

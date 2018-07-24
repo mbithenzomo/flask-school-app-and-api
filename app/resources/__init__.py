@@ -104,7 +104,7 @@ def before_request():
 
 class Index(Resource):
     """Manage responses to the index route.
-    URL: /api/v1/
+    URL: /api/v1
     Request method: GET
     """
 
