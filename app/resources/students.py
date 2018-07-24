@@ -67,19 +67,19 @@ class StudentListAPI(Resource):
             required=True,
             help="Please enter an email address.")
         parser.add_argument(
-            "major",
+            "major_id",
             help="Please enter only one subject ID.")
         parser.add_argument(
             "minors",
             help="Separate multiple subject IDs with a comma.")
         args = parser.parse_args()
-        first_name, last_name, email_address, major, minors = \
+        first_name, last_name, email_address, major_id, minors = \
             args["first_name"], args["last_name"], args["email_address"], \
-            args["major"], args["minors"]
+            args["major_id"], args["minors"]
         student = Student(first_name=first_name,
                           last_name=last_name,
                           email_address=email_address,
-                          major=major,
+                          major_id=major_id,
                           student_id="ST" + str(random.randint(1, 999)))
         if minors:
             minors_list = [minor.strip() for minor in minors.split(',')]
@@ -124,7 +124,7 @@ class StudentAPI(Resource):
             parser.add_argument("first_name")
             parser.add_argument("last_name")
             parser.add_argument("email_address")
-            parser.add_argument("major")
+            parser.add_argument("major_id")
             parser.add_argument("minors")
             args = parser.parse_args()
 
