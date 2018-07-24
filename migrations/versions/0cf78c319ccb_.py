@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 20e56cee06e4
+Revision ID: 0cf78c319ccb
 Revises: 
-Create Date: 2018-07-24 11:16:57.555251
+Create Date: 2018-07-24 16:47:20.826780
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '20e56cee06e4'
+revision = '0cf78c319ccb'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,36 +22,53 @@ def upgrade():
     sa.Column('first_name', sa.String(length=50), nullable=True),
     sa.Column('last_name', sa.String(length=50), nullable=True),
     sa.Column('email_address', sa.String(length=255), nullable=False),
-    sa.Column('password_hash', sa.String(length=128), nullable=True),
     sa.Column('person_type', sa.String(length=50), nullable=True),
     sa.PrimaryKeyConstraint('email_address'),
     sa.UniqueConstraint('email_address')
     )
+    op.create_table('users',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('username', sa.String(length=50), nullable=True),
+    sa.Column('password_hash', sa.String(length=128), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_users_username'), 'users', ['username'], unique=True)
     op.create_table('teachers',
     sa.Column('email_address', sa.String(length=255), nullable=True),
-    sa.Column('staff_id', sa.Integer(), nullable=False),
+    sa.Column('staff_id', sa.String(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['email_address'], ['person.email_address'], ),
-    sa.PrimaryKeyConstraint('staff_id')
+    sa.PrimaryKeyConstraint('staff_id'),
+    sa.UniqueConstraint('staff_id')
     )
     op.create_table('subjects',
-    sa.Column('subject_id', sa.Integer(), nullable=False),
+    sa.Column('subject_id', sa.String(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=True),
     sa.Column('description', sa.String(length=150), nullable=True),
-    sa.Column('teacher_id', sa.Integer(), nullable=True),
+    sa.Column('teacher_id', sa.String(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['teacher_id'], ['teachers.staff_id'], ),
-    sa.PrimaryKeyConstraint('subject_id')
+    sa.PrimaryKeyConstraint('subject_id'),
+    sa.UniqueConstraint('subject_id')
     )
     op.create_table('students',
     sa.Column('email_address', sa.String(length=255), nullable=True),
-    sa.Column('student_id', sa.Integer(), nullable=False),
-    sa.Column('major_id', sa.Integer(), nullable=True),
+    sa.Column('student_id', sa.String(), nullable=False),
+    sa.Column('major_id', sa.String(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['email_address'], ['person.email_address'], ),
     sa.ForeignKeyConstraint(['major_id'], ['subjects.subject_id'], ),
-    sa.PrimaryKeyConstraint('student_id')
+    sa.PrimaryKeyConstraint('student_id'),
+    sa.UniqueConstraint('student_id')
     )
     op.create_table('student_subject',
-    sa.Column('student_id', sa.Integer(), nullable=True),
-    sa.Column('subject_id', sa.Integer(), nullable=True),
+    sa.Column('student_id', sa.String(), nullable=True),
+    sa.Column('subject_id', sa.String(), nullable=True),
     sa.ForeignKeyConstraint(['student_id'], ['students.student_id'], ),
     sa.ForeignKeyConstraint(['subject_id'], ['subjects.subject_id'], )
     )
@@ -64,5 +81,7 @@ def downgrade():
     op.drop_table('students')
     op.drop_table('subjects')
     op.drop_table('teachers')
+    op.drop_index(op.f('ix_users_username'), table_name='users')
+    op.drop_table('users')
     op.drop_table('person')
     # ### end Alembic commands ###
