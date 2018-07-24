@@ -14,16 +14,19 @@ class TestSubjects(TestBase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("subjects", response.data.decode('utf-8'))
         output = json.loads(response.data.decode('utf-8'))
-        self.assertEqual("Discrete Maths", output["subjects"][0]["name"])
-        self.assertEqual("Introduction to discrete mathematics",
+        self.assertEqual("Transfiguration", output["subjects"][0]["name"])
+        self.assertEqual("Teaches the art of changing the form "
+                         "and appearance of an object or a person.",
                          output["subjects"][0]["description"])
 
     def test_create_subject(self):
         """Test successful creation of subject
         """
         self.subject = {"subject_id": "SB002",
-                        "name": "Literature",
-                        "description": "Introduction to english literature"}
+                        "name": "Charms",
+                        "description": "Teaches charms, that is spells that "
+                        "add certain properties to an object or creature.",
+                        "teacher_id": "TC001"}
         response = self.app.post("/api/v1/subjects",
                                  data=self.subject,
                                  headers=self.token)
@@ -38,13 +41,14 @@ class TestSubjects(TestBase):
         """
 
         self.subject = {"subject_id": "SB002",
-                        "description": "Introduction to english literature"}
+                        "description": "Teaches the correct way to brew "
+                        "potions."}
         response = self.app.post("/api/v1/subjects",
                                  data=self.subject,
                                  headers=self.token)
         self.assertEqual(response.status_code, 400)
         output = json.loads(response.data.decode('utf-8'))
-        expected_response = {"description": "Please enter a description."}
+        expected_response = {"name": "Please enter a name."}
         self.assertEqual(expected_response, output["message"])
 
 
@@ -60,8 +64,9 @@ class TestSubject(TestBase):
         response = self.app.get("/api/v1/subjects/SB001", headers=self.token)
         self.assertEqual(response.status_code, 200)
         output = json.loads(response.data.decode('utf-8'))
-        self.assertEqual("Discrete Maths", output["name"])
-        self.assertEqual("Introduction to discrete mathematics",
+        self.assertEqual("Transfiguration", output["name"])
+        self.assertEqual("Teaches the art of changing the form "
+                         "and appearance of an object or a person.",
                          output["description"])
 
     def test_nonexistent_id(self):
@@ -86,17 +91,17 @@ class TestSubject(TestBase):
                                 headers=self.token)
         self.assertEqual(response.status_code, 200)
         output = json.loads(response.data.decode('utf-8'))
-        self.assertEqual("You have successfully edited the subject.",
+        self.assertEqual("You have successfully edited the subject",
                          output["message"])
-        self.assertEqual("Discrete Maths", output["name"])
+        self.assertEqual("Transfiguration", output["name"])
         self.assertEqual("New description", output["description"])
 
     def test_delete_subject(self):
         """Test that one can delete a selected subject.
         """
         response = self.app.delete("/api/v1/subjects/SB001",
-                                   headers=self.admin_token)
+                                   headers=self.token)
         self.assertEqual(response.status_code, 200)
         output = json.loads(response.data.decode('utf-8'))
         self.assertEqual(output, {"message": "You have successfully "
-                         "deleted the subject with the following ID: SB001."})
+                         "deleted the subject with the following ID: SB001"})

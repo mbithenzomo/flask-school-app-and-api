@@ -12,7 +12,7 @@ class TestAuth(TestBase):
         response = self.app.get("/api/v1/")
         self.assertEqual(response.status_code, 200)
         output = json.loads(response.data.decode('utf-8'))
-        self.assertEqual(output, {"message": "Welcome to the API."})
+        self.assertEqual(output, {"message": "Welcome to the School API."})
 
     def test_no_token(self):
         """
