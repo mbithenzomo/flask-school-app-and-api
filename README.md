@@ -62,18 +62,18 @@ Run ```python run.py```. You may use [Postman](https://chrome.google.com/webstor
 ## Sample Requests
 
 Registering and logging in to get a JWT token:
-![User Registration](https://github.com/mbithenzomo/flask-bucketlist-api/blob/develop/screenshots/register_user.png)
+![User Registration](https://github.com/mbithenzomo/flask-student-api/blob/develop/screenshots/register_user.png)
 
-![User Login](https://github.com/mbithenzomo/flask-bucketlist-api/blob/develop/screenshots/login_user.png)
+![User Login](https://github.com/mbithenzomo/flask-student-api/blob/develop/screenshots/login_user.png)
 
 Displaying a paginated list of teachers:
-![List of Teachers](https://github.com/mbithenzomo/flask-bucketlist-api/blob/develop/screenshots/list_teachers.png)
+![List of Teachers](https://github.com/mbithenzomo/flask-student-api/blob/develop/screenshots/list_teachers.png)
 
 Displaying a paginated list of subjects:
-![List of Subjects](https://github.com/mbithenzomo/flask-bucketlist-api/blob/develop/screenshots/list_subjects.png)
+![List of Subjects](https://github.com/mbithenzomo/flask-student-api/blob/develop/screenshots/list_subjects.png)
 
 Updating a student:
-![Updating Student](https://github.com/mbithenzomo/flask-bucketlist-api/blob/develop/screenshots/update_student.png)
+![Updating Student](https://github.com/mbithenzomo/flask-student-api/blob/develop/screenshots/update_student.png)
 
 ## Testing
 To test, run the following command: ```nose2```
