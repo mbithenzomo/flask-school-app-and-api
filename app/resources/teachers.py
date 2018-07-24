@@ -116,54 +116,60 @@ class TeacherAPI(Resource):
     def put(self, id):
 
         teacher = Teacher.query.filter_by(staff_id=id).first()
+        if teacher:
+            parser = reqparse.RequestParser()
+            parser.add_argument("first_name")
+            parser.add_argument("last_name")
+            parser.add_argument("email_address")
+            parser.add_argument("subjects_taught")
+            args = parser.parse_args()
 
-        parser = reqparse.RequestParser()
-        parser.add_argument("first_name")
-        parser.add_argument("last_name")
-        parser.add_argument("email_address")
-        parser.add_argument("subjects_taught")
-        args = parser.parse_args()
+            for field in args:
+                if args[field] is not None:
+                    if field == "subjects_taught":
+                        # Clear the teacher's list of subjects
+                        for subject in teacher.subjects_taught:
+                            subject.teacher = None
+                        teacher.subjects_taught = []
+                        subjects_taught = args["subjects_taught"]
+                        subjects_taught_list = [subject.strip() for subject in
+                                                subjects_taught.split(',')]
+                        # Append new subjects into list
+                        for subject_id in subjects_taught_list:
+                            try:
+                                subject = Subject.query.get(subject_id)
+                                if subject:
+                                    teacher.subjects_taught.append(subject)
+                                else:
+                                    return {"error": "One or more subject "
+                                            "IDs you entered is invalid."}, 400
+                            except:
+                                return {"error": "The subjects_taught field "
+                                        "should only contain subject IDs "
+                                        "separated by a comma."}, 400
+                    elif field == "email_address":
+                        return {"error": "You can't update the email address "
+                                "field."}, 400
+                    else:
+                        updated_field = args[field]
+                        setattr(teacher, field, updated_field)
 
-        for field in args:
-            if args[field] is not None:
-                if field == "subjects_taught":
-                    # Clear the teacher's list of subjects
-                    for subject in teacher.subjects_taught:
-                        subject.teacher = None
-                    teacher.subjects_taught = []
-                    subjects_taught = args["subjects_taught"]
-                    subjects_taught_list = [subject.strip() for subject in
-                                            subjects_taught.split(',')]
-                    # Append new subjects into list
-                    for subject_id in subjects_taught_list:
-                        try:
-                            subject = Subject.query.get(subject_id)
-                            if subject:
-                                teacher.subjects_taught.append(subject)
-                            else:
-                                return {"error": "One or more subject "
-                                        "IDs you entered is invalid."}, 400
-                        except:
-                            return {"error": "The subjects_taught field "
-                                    "should only contain subject IDs "
-                                    "separated by a comma."}, 400
-                elif field == "email_address":
-                    return {"error": "You can't update the email address "
-                            "field."}, 400
-                else:
-                    updated_field = args[field]
-                    setattr(teacher, field, updated_field)
-
-        return create_or_update_resource(
-            resource=teacher,
-            resource_type="teacher",
-            serializer=teacher_serializer,
-            create=False)
+            return create_or_update_resource(
+                resource=teacher,
+                resource_type="teacher",
+                serializer=teacher_serializer,
+                create=False)
+        else:
+            return {"error": "A teacher with ID " + id + " does "
+                             "not exist."}, 404
 
     def delete(self, id):
 
         teacher = Teacher.query.filter_by(staff_id=id).first()
-
-        return delete_resource(resource=teacher,
-                               resource_type="teacher",
-                               id=id)
+        if teacher:
+            return delete_resource(resource=teacher,
+                                   resource_type="teacher",
+                                   id=id)
+        else:
+            return {"error": "A teacher with ID " + id + " does "
+                             "not exist."}, 404

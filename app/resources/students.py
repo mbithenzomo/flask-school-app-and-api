@@ -119,44 +119,47 @@ class StudentAPI(Resource):
     def put(self, id):
 
         student = Student.query.filter_by(student_id=id).first()
+        if student:
+            parser = reqparse.RequestParser()
+            parser.add_argument("first_name")
+            parser.add_argument("last_name")
+            parser.add_argument("email_address")
+            parser.add_argument("major")
+            parser.add_argument("minors")
+            args = parser.parse_args()
 
-        parser = reqparse.RequestParser()
-        parser.add_argument("first_name")
-        parser.add_argument("last_name")
-        parser.add_argument("email_address")
-        parser.add_argument("major")
-        parser.add_argument("minors")
-        args = parser.parse_args()
-
-        for field in args:
-            if args[field] is not None:
-                if field == "minors":
-                    # Clear the student's list of minors
-                    for subject in student.minors:
-                        subject.minor_students.remove(student)
-                    student.minors = []
-                    minors = args["minors"]
-                    minors_list = [minor.strip() for minor in
-                                   minors.split(',')]
-                    # Append new minors into list
-                    for subject_id in minors_list:
-                        try:
-                            minor = Subject.query.get(subject_id)
-                            if minor:
-                                student.minors.append(minor)
-                            else:
-                                return {"error": "One or more subject "
-                                        "IDs you entered is invalid."}, 400
-                        except:
-                            return {"error": "The minors field should only "
-                                    "contain subject IDs separated by a comma."
-                                    }, 400
-                elif field == "email_address":
-                    return {"error": "You can't update the email address "
-                            "field."}, 400
-                else:
-                    updated_field = args[field]
-                    setattr(student, field, updated_field)
+            for field in args:
+                if args[field] is not None:
+                    if field == "minors":
+                        # Clear the student's list of minors
+                        for subject in student.minors:
+                            subject.minor_students.remove(student)
+                        student.minors = []
+                        minors = args["minors"]
+                        minors_list = [minor.strip() for minor in
+                                       minors.split(',')]
+                        # Append new minors into list
+                        for subject_id in minors_list:
+                            try:
+                                minor = Subject.query.get(subject_id)
+                                if minor:
+                                    student.minors.append(minor)
+                                else:
+                                    return {"error": "One or more subject "
+                                            "IDs you entered is invalid."}, 400
+                            except:
+                                return {"error": "The minors field should "
+                                        "only contain subject IDs separated "
+                                        "by a comma."}, 400
+                    elif field == "email_address":
+                        return {"error": "You can't update the email address "
+                                "field."}, 400
+                    else:
+                        updated_field = args[field]
+                        setattr(student, field, updated_field)
+        else:
+            return {"error": "A student with ID " + id + " does "
+                             "not exist."}, 404
 
         return create_or_update_resource(
             resource=student,
@@ -167,7 +170,10 @@ class StudentAPI(Resource):
     def delete(self, id):
 
         student = Student.query.filter_by(student_id=id).first()
-
-        return delete_resource(resource=student,
-                               resource_type="student",
-                               id=id)
+        if student:
+            return delete_resource(resource=student,
+                                   resource_type="student",
+                                   id=id)
+        else:
+            return {"error": "A student with ID " + id + " does "
+                             "not exist."}, 404

@@ -18,9 +18,10 @@ def create_or_update_resource(**kwargs):
         kwargs["create"]: Flag to determine whether resource is being created.
         kwargs["resource_type"]: The type of resource, e.g student, teacher.
     """
-    db.session.add(kwargs["resource"])
-    db.session.commit()
     try:
+        db.session.add(kwargs["resource"])
+        db.session.commit()
+
         if kwargs["create"]:
             if kwargs["resource_type"] == "user":
                 # Get user's auth token
@@ -43,13 +44,13 @@ def create_or_update_resource(**kwargs):
             response.update(message)
             return response
 
-    except IntegrityError as e:
+    except IntegrityError:
         """Handle integrity errors, such as
         when adding an resource that already exists
         """
 
         db.session.rollback()
-        return {"error": str(e)}, 400
+        return {"error": "Resource already exists"}, 400
 
 
 def delete_resource(resource, **kwargs):
