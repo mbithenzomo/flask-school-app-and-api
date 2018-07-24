@@ -97,3 +97,16 @@ def before_request():
                 return error_message(token_decode_response), 401
         else:
             return error_message("Please enter a token."), 401
+
+
+class Index(Resource):
+    """Manage responses to the index route.
+    URL: /api/v1/
+    Request method: GET
+    """
+
+    def get(self):
+        """Return a welcome message
+        """
+
+        return {"message": "Welcome to the School API."}
