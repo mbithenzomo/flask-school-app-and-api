@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>School App</title>
+    <!-- Bootstrap core CSS     -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+    <!--  Login page CSS    -->
+    <link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet" />
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<section class="login-block">
+  <div class="container">
+  	<div class="row">
+  		<div class="col-md-4 login-sec">
+          <img class="logo" src="{{ url_for('static', filename='img/school-logo.png') }}">
+          {% if message %}
+            <div class="alert alert-success">
+              {{ message }}
+            </div>
+          {% endif %}
+          {% if error %}
+            <div class="alert alert-danger">
+              <strong>Error!</strong> {{ error }}
+            </div>
+          {% endif %}
+          <form class="login-form" action="" method="post">
+            <div class="form-group">
+              <label for="username" class="text-uppercase">Username</label>
+              <input type="text" name="username" class="form-control" value="{{ request.form.username }}">
+            </div>
+            <div class="form-group">
+              <label for="password" class="text-uppercase">Password</label>
+              <input type="password" name="password" class="form-control" value="{{request.form.password }}">
+            </div>
+            <button type="submit" class="btn btn-login float-right">Submit</button>
+          </form>
+  		</div>
+  		<div class="col-md-8 banner-sec">
+        <div class="banner-text">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

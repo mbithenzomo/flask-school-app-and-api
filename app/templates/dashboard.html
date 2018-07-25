@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="wrapper">
+    <div class="sidebar" data-color="main" data-image="{{ url_for('static', filename='img/sidebar.jpg') }}">
+        <div class="logo">
+          <img class="dashboard-logo" src="{{ url_for('static', filename='img/school-logo.png') }}">
+        </div>
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+              <li class="active" id="menu-dashboard">
+                <a style="cursor:pointer">
+                    <i class="material-icons">dashboard</i>
+                    <p>Dashboard</p>
+                </a>
+              </li>
+              <li id="menu-students">
+                  <a style="cursor:pointer">
+                      <i class="material-icons">group</i>
+                      <p>Students</p>
+                  </a>
+              </li>
+              <li id="menu-teachers">
+                  <a style="cursor:pointer">
+                      <i class="material-icons">school</i>
+                      <p>Teachers</p>
+                  </a>
+              </li>
+              <li id="menu-subjects">
+                  <a style="cursor:pointer">
+                      <i class="material-icons">library_books</i>
+                      <p>Subjects</p>
+                  </a>
+              </li>
+              <li id="menu-logout">
+                  <a href="{{ url_for('logout') }}">
+                      <i class="material-icons">exit_to_app</i>
+                      <p>Log Out</p>
+                  </a>
+              </li>
+            </ul>
+        </div>
+    </div>
+    <div class="main-panel">
+        <nav class="navbar navbar-transparent navbar-absolute">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <ul class="nav navbar-nav navbar-left">
+                      <li class="open">
+                          <a id="toggle-sidebar" href="#pablo" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                              <i class="material-icons">menu</i>
+                              <p class="hidden-lg hidden-md">Toggle Sidebar</p>
+                          <div class="ripple-container"></div></a>
+                      </li>
+                      <a class="navbar-brand">School App Dashboard</a>
+                    </ul>
+                </div>
+                <br>
+            </div>
+        </nav>
+        <div class="content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  {% if category == 'error' %}
+                    <div class="alert alert-danger alert-with-icon" data-notify="container">
+                  {% elif category == 'success' %}
+                    <div class="alert alert-success alert-with-icon" data-notify="container">
+                  {% else %}
+                    <div class="alert alert-info alert-with-icon" data-notify="container">
+                  {% endif %}
+                    <button type="button" aria-hidden="true" class="close" onclick="$('.alert').hide();">×</button>
+                    <i data-notify="icon" class="material-icons">add_alert</i>
+                    <span data-notify="message">
+                      <b> {{ message }}
+                    </span>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <div class="container-fluid">
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header" data-background-color="orange">
+                                <i class="material-icons">group</i>
+                            </div>
+                            <div class="card-content">
+                                <p class="category">Students</p>
+                                <h3 class="title">{{ students|count }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header" data-background-color="purple">
+                                <i class="material-icons">school</i>
+                            </div>
+                            <div class="card-content">
+                                <p class="category">Teachers</p>
+                                <h3 class="title">{{ teachers|count }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header" data-background-color="red">
+                                <i class="material-icons">library_books</i>
+                            </div>
+                            <div class="card-content">
+                                <p class="category">Subjects</p>
+                                <h3 class="title">{{ subjects|count }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <img id="dashboard-wallpaper" src="{{ url_for('static', filename='img/wallpaper.jpg') }}" width="100%">
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="card data-tables" id="students-card">
+                            <div class="card-header" data-background-color="main">
+                                <h4 class="title">Students</h4>
+                            </div>
+                            <div class="card-content table-responsive">
+                              {% if students %}
+                                <table class="table table-hover">
+                                    <thead class="text-success">
+                                      <th>Student ID</th>
+                                      <th>First Name</th>
+                                      <th>Last Name</th>
+                                      <th>Email Address</th>
+                                      <th>Major</th>
+                                      <th>Minors</th>
+                                      <th>Edit</th>
+                                      <th>Delete</th>
+                                    </thead>
+                                    <tbody>
+                                      {% for student in students %}
+                                        <tr>
+                                            <td>{{ student.student_id }}</td>
+                                            <td>{{ student.first_name }}</td>
+                                            <td>{{ student.last_name }}</td>
+                                            <td>{{ student.email_address }}</td>
+                                            <td>{{ student.major.name }}</td>
+                                            <td>
+                                              {% for minor in student.minors %}
+                                                {{ minor.name }}
+                                                {{ "," if not loop.last }}
+                                              {% endfor %}
+                                            </td>
+                                            <td>
+                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                                                  <a href="{{ url_for('login') }}">
+                                                    <i class="material-icons" style="color: purple;">edit</i>
+                                                  </a>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                                                  <a href="{{ url_for('login') }}">
+                                                    <i class="material-icons" style="color: red;">delete_forever</i>
+                                                  </a>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                      {% endfor %}
+                                    </tbody>
+                                </table>
+                              {% else %}
+                                <p> There are currently no students in the database. </p>
+                              {% endif %}
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12">
+                        <div class="card data-tables" id="teachers-card">
+                            <div class="card-header" data-background-color="main">
+                                <h4 class="title">Teachers</h4>
+                            </div>
+                            <div class="card-content table-responsive">
+                              {% if teachers %}
+                                <table class="table table-hover">
+                                    <thead class="text-success">
+                                      <th>Staff ID</th>
+                                      <th>First Name</th>
+                                      <th>Last Name</th>
+                                      <th>Subjects Taught</th>
+                                      <th>Edit</th>
+                                      <th>Delete</th>
+                                    </thead>
+                                    <tbody>
+                                      {% for teacher in teachers %}
+                                        <tr>
+                                            <td>{{ teacher.staff_id }}</td>
+                                            <td>{{ teacher.first_name }}</td>
+                                            <td>{{ teacher.last_name }}</td>
+                                            <td>
+                                              {% for subject in teacher.subjects_taught %}
+                                                {{ subject.name }}
+                                                {{ "," if not loop.last }}
+                                              {% endfor %}
+                                            </td>
+                                            <td>
+                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                                                  <a href="{{ url_for('login') }}">
+                                                    <i class="material-icons" style="color: purple;">edit</i>
+                                                  </a>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                                                  <a href="{{ url_for('login') }}">
+                                                    <i class="material-icons" style="color: red;">delete_forever</i>
+                                                  </a>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                      {% endfor %}
+                                    </tbody>
+                                </table>
+                              {% else %}
+                                  <p> There are currently no teachers in the database. </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12">
+                        <div class="card data-tables" id="subjects-card">
+                            <div class="card-header" data-background-color="main">
+                                <h4 class="title">Subjects</h4>
+                            </div>
+                            <div class="card-content table-responsive">
+                              {% if subjects %}
+                                <table class="table table-hover">
+                                    <thead class="text-success">
+                                      <th>Subject ID</th>
+                                      <th>Name</th>
+                                      <th>Description</th>
+                                      <th>Teacher</th>
+                                      <th>Major Students</th>
+                                      <th>Minor Students</th>
+                                      <th>Edit</th>
+                                      <th>Delete</th>
+                                    </thead>
+                                    <tbody>
+                                      {% for subject in subjects %}
+                                        <tr>
+                                            <td>{{ subject.subject_id }}</td>
+                                            <td>{{ subject.name }}</td>
+                                            <td>{{ subject.description }}</td>
+                                            <td>{{ subject.teacher.first_name }} {{ subject.teacher.last_name }}</td>
+                                            <td>
+                                              {% for student in subject.major_students %}
+                                                {{ student.first_name }} {{ student.last_name }}
+                                                {{ "," if not loop.last }}
+                                              {% endfor %}
+                                            </td>
+                                            <td>
+                                              {% for student in subject.minor_students %}
+                                                {{ student.first_name }} {{ student.last_name }}
+                                                {{ "," if not loop.last }}
+                                              {% endfor %}
+                                            </td>
+                                            <td>
+                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                                                  <a href="{{ url_for('login') }}">
+                                                    <i class="material-icons" style="color: purple;">edit</i>
+                                                  </a>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                                                  <a href="{{ url_for('login') }}">
+                                                    <i class="material-icons" style="color: red;">delete_forever</i>
+                                                  </a>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                      {% endfor %}
+                                    </tbody>
+                                </table>
+                              {% else %}
+                                <p> There are currently no subjects in the database. </p>
+                              {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
