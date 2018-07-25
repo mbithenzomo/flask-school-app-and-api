@@ -458,11 +458,47 @@
                                               {% endfor %}
                                             </td>
                                             <td>
-                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
-                                                  <a href="{{ url_for('login') }}">
+                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs" data-toggle="modal" data-target="#edit-subject-modal">
                                                     <i class="material-icons" style="color: purple;">edit</i>
-                                                  </a>
                                                 </button>
+                                                <div class="modal fade" id="edit-subject-modal" role="dialog">
+                                                  <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                      <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Edit Subject</h4>
+                                                      </div>
+                                                      <div class="modal-body">
+                                                        <form class="login-form" action="{{ url_for('edit_subject', id=subject.subject_id) }}" method="post" style="padding-right: 30px !important; padding-left: 30px !important;">
+                                                          <div class="row">
+                                                            <div class="col-md-6">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">Name</label>
+                                                                <input type="text" name="name" class="form-control" value="{{ subject.name }}">
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">Teacher ID</label>
+                                                                <input type="text" name="teacher_id" class="form-control" value="{{ subject.teacher_id }}">
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                          <div class="col-md-12">
+                                                            <div class="form-group">
+                                                              <label class="bmd-label-floating">Description</label>
+                                                              <textarea name="description" class="form-control" maxlength=150>{{ subject.description }}</textarea>
+                                                            </div>
+                                                          </div>
+                                                          <button type="submit" class="btn btn-login float-right" data-background-color="main">Edit Subject</button>
+                                                        </form>
+                                                      </div>
+                                                      <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal" data-background-color="red">Close</button>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
                                             </td>
                                             <td>
                                                 <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
