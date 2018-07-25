@@ -79,8 +79,11 @@ class StudentListAPI(Resource):
         student = Student(first_name=first_name,
                           last_name=last_name,
                           email_address=email_address,
-                          major_id=major_id,
                           student_id="ST" + str(random.randint(1, 999)))
+
+        if major_id:
+            student.major_id = major_id
+
         if minors:
             minors_list = [minor.strip() for minor in minors.split(',')]
             for subject_id in minors_list:
