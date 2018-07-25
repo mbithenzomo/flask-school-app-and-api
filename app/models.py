@@ -11,8 +11,10 @@ from app import app, db
 # be taught to several students as a minor
 student_subject_table = db.Table(
     "student_subject", db.Model.metadata,
-    db.Column("student_id", db.String, db.ForeignKey("students.student_id")),
-    db.Column("subject_id", db.String, db.ForeignKey("subjects.subject_id"))
+    db.Column("student_id", db.String(50), db.ForeignKey(
+        "students.student_id")),
+    db.Column("subject_id", db.String(50), db.ForeignKey(
+        "subjects.subject_id"))
 )
 
 
@@ -105,8 +107,8 @@ class Student(Person):
 
     email_address = db.Column(db.String(255), db.ForeignKey(
                                 "person.email_address"))
-    student_id = db.Column(db.String, unique=True, primary_key=True)
-    major_id = db.Column(db.String, db.ForeignKey("subjects.subject_id"))
+    student_id = db.Column(db.String(50), unique=True, primary_key=True)
+    major_id = db.Column(db.String(50), db.ForeignKey("subjects.subject_id"))
     minors = db.relationship("Subject", secondary=student_subject_table,
                              back_populates="minor_students")
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -126,7 +128,7 @@ class Teacher(Person):
 
     email_address = db.Column(db.String(255), db.ForeignKey(
                                 "person.email_address"))
-    staff_id = db.Column(db.String, unique=True, primary_key=True)
+    staff_id = db.Column(db.String(50), unique=True, primary_key=True)
     subjects_taught = db.relationship("Subject", backref="teacher",
                                       lazy="dynamic")
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -144,10 +146,10 @@ class Subject(db.Model):
 
     __tablename__ = "subjects"
 
-    subject_id = db.Column(db.String, unique=True, primary_key=True)
+    subject_id = db.Column(db.String(50), unique=True, primary_key=True)
     name = db.Column(db.String(50))
     description = db.Column(db.String(150))
-    teacher_id = db.Column(db.String, db.ForeignKey("teachers.staff_id"))
+    teacher_id = db.Column(db.String(50), db.ForeignKey("teachers.staff_id"))
     major_students = db.relationship("Student", backref="major",
                                      lazy="dynamic")
     minor_students = db.relationship("Student",

@@ -1,3 +1,4 @@
+import os
 import requests
 
 from ast import literal_eval
@@ -7,6 +8,11 @@ from flask import redirect, render_template, request, url_for
 from app import app
 from app.models import Student, Teacher, Subject
 
+if os.getenv("ENVIRONMENT") == "development":
+    path = "http://127.0.0.1:5000"
+else:
+    path = "https://flaskschoolapp.pythonanywhere.com"
+
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -14,7 +20,7 @@ def login():
     if request.method == 'POST':
         user = {"username": request.form["username"],
                 "password": request.form["password"]}
-        response = requests.post("http://127.0.0.1:5000/api/v1/auth/login",
+        response = requests.post(path + "/api/v1/auth/login",
                                  data=user)
         output = literal_eval(response.text.encode('utf-8'))
         if output.get("error"):

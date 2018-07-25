@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
@@ -15,6 +17,6 @@ def create_app(configuration):
     return app
 
 
-app = create_app("development")
+app = create_app(os.getenv('ENVIRONMENT'))
 api = Api(app=app, prefix="/api/v1")
 from app import views

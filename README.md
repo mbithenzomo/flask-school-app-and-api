@@ -37,9 +37,10 @@ pip install -r requirements.txt
 Create a `.env` file with the following keys:
 ```
 SECRET_KEY
-DATABASE_UR
+DATABASE_URI
 DATABASE_NAME
 TEST_DATABASE_URI
+ENVIRONMENT: this can be either "production" or "development"
 ```
 
 Initialize, migrate, and upgrade the database:
