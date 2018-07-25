@@ -1,8 +1,7 @@
-[![Build Status](https://travis-ci.org/mbithenzomo/flask-student-api.svg?branch=develop)](https://travis-ci.org/mbithenzomo/flask-student-api)
-![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
+[![Build Status](https://travis-ci.org/mbithenzomo/flask-school-app-and-api.svg?branch=master)](https://travis-ci.org/mbithenzomo/flask-school-app-and-api)
 
-# School API
-This is a RESTful API with the following properties:
+# School App and API
+This is a Flask app with an API layer. It has the following properties:
 
 1. It has the following relational entities:
     1. Student
@@ -37,10 +36,9 @@ pip install -r requirements.txt
 Create a `.env` file with the following keys:
 ```
 SECRET_KEY
-DATABASE_URI
-DATABASE_NAME
-TEST_DATABASE_URI
-ENVIRONMENT: this can be either "production" or "development"
+DATABASE_URI - for SQLAlchemy
+TEST_DATABASE_URI - for SQLAlchemy
+ENVIRONMENT - this is either production or development
 ```
 
 Initialize, migrate, and upgrade the database:
@@ -68,21 +66,46 @@ Run ```python run.py```. You may use [Postman](https://chrome.google.com/webstor
 | `/api/v1/subjects/<string:id>` | GET, PUT, DELETE | View, edit, and delete a single subject | TRUE |
 
 
-## Sample Requests
+## Sample API Requests
 
 Registering and logging in to get a JWT token:
-![User Registration](https://github.com/mbithenzomo/flask-student-api/blob/develop/screenshots/register_user.png)
+![User Registration](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/api_register.png)
 
-![User Login](https://github.com/mbithenzomo/flask-student-api/blob/develop/screenshots/login_user.png)
+![User Login](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/api_login.png)
 
 Displaying a paginated list of teachers:
-![List of Teachers](https://github.com/mbithenzomo/flask-student-api/blob/develop/screenshots/list_teachers.png)
+![List of Teachers](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/api_list_teachers.png)
 
 Displaying a paginated list of subjects:
-![List of Subjects](https://github.com/mbithenzomo/flask-student-api/blob/develop/screenshots/list_subjects.png)
+![List of Subjects](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/api_list_subjects.png)
 
 Updating a student:
-![Updating Student](https://github.com/mbithenzomo/flask-student-api/blob/develop/screenshots/update_student.png)
+![Updating Student](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/api_update_student.png)
+
+## Web App
+
+The app has a web-based interface and can be accessed [here](http://flaskschoolapp.pythonanywhere.com). A sample user has already been created with the following credentials:
+
+```
+username: testuser
+password: testpassword
+```
+
+Dashboard:
+![App Dashboard](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/app_dashboard.png)
+
+Login:
+![User Login](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/app_login.png)
+
+Displaying all students:
+![Students](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/app_students.png)
+
+Displaying all teachers:
+![Teachers](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/app_teachers.png)
+
+Displaying all subjects:
+![Subjects](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/app_subjects.png)
+
 
 ## Testing
 To test, run the following command: ```nose2```
