@@ -91,11 +91,11 @@ username: testuser
 password: testpassword
 ```
 
-Dashboard:
-![App Dashboard](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/app_dashboard.png)
-
 Login:
 ![User Login](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/app_login.png)
+
+Dashboard:
+![App Dashboard](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/app_dashboard.png)
 
 Displaying all students:
 ![Students](https://github.com/mbithenzomo/flask-student-api/blob/master/screenshots/app_students.png)

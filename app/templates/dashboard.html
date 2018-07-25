@@ -229,6 +229,7 @@
                                       <th>Staff ID</th>
                                       <th>First Name</th>
                                       <th>Last Name</th>
+                                      <th>Email Address</th>
                                       <th>Subjects Taught</th>
                                       <th>Edit</th>
                                       <th>Delete</th>
@@ -239,6 +240,7 @@
                                             <td>{{ teacher.staff_id }}</td>
                                             <td>{{ teacher.first_name }}</td>
                                             <td>{{ teacher.last_name }}</td>
+                                            <td>{{ teacher.email_address }}</td>
                                             <td>
                                               {% for subject in teacher.subjects_taught %}
                                                 {{ subject.name }}
@@ -319,7 +321,7 @@
                                     <thead class="text-success">
                                       <th>Subject ID</th>
                                       <th>Name</th>
-                                      <th>Description</th>
+                                      <th width="25%">Description</th>
                                       <th>Teacher</th>
                                       <th>Major Students</th>
                                       <th>Minor Students</th>
