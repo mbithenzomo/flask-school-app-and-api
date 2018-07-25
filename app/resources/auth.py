@@ -58,6 +58,7 @@ class UserLogin(Resource):
         if user and user.verify_password(password):
             auth_token = user.generate_auth_token(user.id)
             return {"message": "You have successfully logged in",
+                    "user_id": user.id,
                     "token": auth_token.decode()}
         else:
             return {"error": "Incorrect username and/or password"}, 400

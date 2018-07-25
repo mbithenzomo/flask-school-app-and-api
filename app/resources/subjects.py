@@ -69,13 +69,17 @@ class SubjectListAPI(Resource):
         args = parser.parse_args()
         name, description, teacher_id = args["name"], args["description"], \
             args["teacher_id"]
-        teacher = Teacher.query.filter_by(staff_id=teacher_id).first()
-        if not teacher:
-            return {"error": "The teacher ID you entered is invalid."}, 400
         subject = Subject(name=name,
                           description=description,
-                          teacher_id=teacher_id,
                           subject_id="SB" + str(random.randint(1, 999)))
+
+        if teacher_id:
+            teacher = Teacher.query.filter_by(staff_id=teacher_id).first()
+            if not teacher:
+                return {"error": "The teacher ID you entered is invalid."}, 400
+            else:
+                subject.teacher = teacher
+
         return create_or_update_resource(
             resource=subject,
             resource_type="subject",

@@ -2,9 +2,10 @@ import jwt
 import datetime as dt
 from datetime import datetime
 
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from app import app, db
+from app import app, db, login_manager
 
 # For the many-to-many relationship between subjects and students.
 # One student can minor in several subjects and one subject can
@@ -18,7 +19,7 @@ student_subject_table = db.Table(
 )
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     """Users will be able to register and login.
     They will also get a token that will allow
     them to make requests.
@@ -82,6 +83,12 @@ class User(db.Model):
 
     def __repr__(self):
         return "<User: {}>".format(self.username)
+
+
+# Set up user_loader
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 class Person(db.Model):

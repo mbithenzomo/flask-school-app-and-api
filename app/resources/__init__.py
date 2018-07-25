@@ -50,7 +50,8 @@ def create_or_update_resource(**kwargs):
         """
 
         db.session.rollback()
-        return {"error": "Resource already exists"}, 400
+        return {"error": "An error occurred. Please review your output and "
+                "try again."}, 400
 
 
 def delete_resource(resource, **kwargs):

@@ -58,7 +58,7 @@
             </div>
         </nav>
         <div class="content">
-            {% with messages = get_flashed_messages(with_categories=true) %}
+          {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
                 {% for category, message in messages %}
                   {% if category == 'error' %}
@@ -129,7 +129,7 @@
                                       <th>Last Name</th>
                                       <th>Email Address</th>
                                       <th>Major</th>
-                                      <th>Minors</th>
+                                      <th width="30%">Minors</th>
                                       <th>Edit</th>
                                       <th>Delete</th>
                                     </thead>
@@ -148,15 +148,65 @@
                                               {% endfor %}
                                             </td>
                                             <td>
-                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
-                                                  <a href="{{ url_for('login') }}">
-                                                    <i class="material-icons" style="color: purple;">edit</i>
-                                                  </a>
+                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs" data-toggle="modal" data-target="#edit-student-modal">
+                                                  <i class="material-icons" style="color: purple;">edit</i>
                                                 </button>
+                                                <div class="modal fade" id="edit-student-modal" role="dialog">
+                                                  <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                      <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Edit Student</h4>
+                                                      </div>
+                                                      <div class="modal-body">
+                                                        <form class="login-form" action="{{ url_for('edit_student', id=student.student_id) }}" method="post" style="padding-right: 30px !important; padding-left: 30px !important;">
+                                                          <div class="row">
+                                                            <div class="col-md-3">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">First Name</label>
+                                                                <input type="text" name="first_name" class="form-control" value="{{ student.first_name }}" required>
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">Last Name</label>
+                                                                <input type="text" name="last_name" class="form-control" value="{{ student.last_name }}" required>
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">Email Address</label>
+                                                                <input type="email" name="email_address" class="form-control" value="{{ student.email_address }}" required>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                          <div class="row">
+                                                            <div class="col-md-5">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">Major</label>
+                                                                <input type="text" name="major" class="form-control" value="{{ student.major.subject_id }}">
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-md-7">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">Minors</label>
+                                                                  <input type="text" name="minors" class="form-control" value="{% for subject in student.minors %} {{ subject.subject_id }} {{ "," if not loop.last }} {% endfor %}">
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                          <button type="submit" class="btn btn-login float-right" data-background-color="main">Edit Student</button>
+                                                        </form>
+                                                      </div>
+                                                      <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal" data-background-color="red">Close</button>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
                                             </td>
                                             <td>
                                                 <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
-                                                  <a href="{{ url_for('login') }}">
+                                                  <a href="{{ url_for('delete_student', id=student.student_id) }}">
                                                     <i class="material-icons" style="color: red;">delete_forever</i>
                                                   </a>
                                                 </button>
@@ -168,7 +218,60 @@
                               {% else %}
                                 <p> There are currently no students in the database. </p>
                               {% endif %}
+                              <button class="btn" style="background-color: #ff9800;" data-toggle="modal" data-target="#add-student-modal"><i class="material-icons">add_box</i> Add Student</button>
                             </div>
+                        </div>
+                        <div class="modal fade" id="add-student-modal" role="dialog">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Add Student</h4>
+                              </div>
+                              <div class="modal-body">
+                                <form class="login-form" action="{{ url_for('add_student') }}" method="post" style="padding-right: 30px !important; padding-left: 30px !important;">
+                                  <div class="row">
+                                    <div class="col-md-3">
+                                      <div class="form-group">
+                                        <label class="bmd-label-floating">First Name</label>
+                                        <input type="text" name="first_name" class="form-control" value="{{ request.form.first_name }}" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                      <div class="form-group">
+                                        <label class="bmd-label-floating">Last Name</label>
+                                        <input type="text" name="last_name" class="form-control" value="{{ request.form.last_name }}" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label class="bmd-label-floating">Email Address</label>
+                                        <input type="email" name="email_address" class="form-control" value="{{ request.form.email_address }}" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-5">
+                                      <div class="form-group">
+                                        <label class="bmd-label-floating">Major</label>
+                                        <input type="text" name="major" class="form-control" value="{{ request.form.major }}">
+                                      </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                      <div class="form-group">
+                                        <label class="bmd-label-floating">Minors</label>
+                                        <input type="text" name="minors" class="form-control" value="{{ request.form.minors }}">
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <button type="submit" class="btn btn-login float-right" style="background-color:#4BD1A0;">Add Student</button>
+                                </form>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color:#ef5350;">Close</button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -184,6 +287,7 @@
                                       <th>Staff ID</th>
                                       <th>First Name</th>
                                       <th>Last Name</th>
+                                      <th>Email Address</th>
                                       <th>Subjects Taught</th>
                                       <th>Edit</th>
                                       <th>Delete</th>
@@ -194,6 +298,7 @@
                                             <td>{{ teacher.staff_id }}</td>
                                             <td>{{ teacher.first_name }}</td>
                                             <td>{{ teacher.last_name }}</td>
+                                            <td>{{ teacher.email_address }}</td>
                                             <td>
                                               {% for subject in teacher.subjects_taught %}
                                                 {{ subject.name }}
@@ -201,15 +306,59 @@
                                               {% endfor %}
                                             </td>
                                             <td>
-                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
-                                                  <a href="{{ url_for('login') }}">
-                                                    <i class="material-icons" style="color: purple;">edit</i>
-                                                  </a>
+                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs" data-toggle="modal" data-target="#edit-teacher-modal">
+                                                  <i class="material-icons" style="color: purple;">edit</i>
                                                 </button>
+                                                <div class="modal fade" id="edit-teacher-modal" role="dialog">
+                                                  <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                      <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Edit Teacher</h4>
+                                                      </div>
+                                                      <div class="modal-body">
+                                                        <form class="login-form" action="{{ url_for('edit_teacher', id=teacher.staff_id) }}" method="post" style="padding-right: 30px !important; padding-left: 30px !important;">
+                                                          <div class="row">
+                                                            <div class="col-md-6">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">First Name</label>
+                                                                <input type="text" name="first_name" class="form-control" value="{{ teacher.first_name }}">
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">Last Name</label>
+                                                                <input type="text" name="last_name" class="form-control" value="{{ teacher.last_name }}">
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                          <div class="row">
+                                                            <div class="col-md-6">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">Email Address</label>
+                                                                <input type="email" name="email_address" class="form-control" value="{{ teacher.email_address }}" disabled>
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">Subjects Taught</label>
+                                                                <input type="text" name="subjects_taught" class="form-control" value="{% for subject in teacher.subjects_taught %} {{ subject.subject_id }} {{ "," if not loop.last }} {% endfor %}">
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                          <button type="submit" class="btn btn-login float-right" data-background-color="main">Edit Teacher</button>
+                                                        </form>
+                                                      </div>
+                                                      <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal" data-background-color="red">Close</button>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
                                             </td>
                                             <td>
                                                 <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
-                                                  <a href="{{ url_for('login') }}">
+                                                  <a href="{{ url_for('delete_teacher', id=teacher.staff_id) }}">
                                                     <i class="material-icons" style="color: red;">delete_forever</i>
                                                   </a>
                                                 </button>
@@ -219,9 +368,56 @@
                                     </tbody>
                                 </table>
                               {% else %}
-                                  <p> There are currently no teachers in the database. </p>
-                                {% endif %}
+                                <p> There are currently no teachers in the database. </p>
+                              {% endif %}
+                              <button class="btn" style="background-color: #ab47bc;" data-toggle="modal" data-target="#add-teacher-modal"><i class="material-icons">add_box</i> Add Teacher</button>
                             </div>
+                        </div>
+                        <div class="modal fade" id="add-teacher-modal" role="dialog">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Add Teacher</h4>
+                              </div>
+                              <div class="modal-body">
+                                <form class="login-form" action="{{ url_for('add_teacher') }}" method="post" style="padding-right: 30px !important; padding-left: 30px !important;">
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label class="bmd-label-floating">First Name</label>
+                                        <input type="text" name="first_name" class="form-control" value="{{ request.form.first_name }}" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label class="bmd-label-floating">Last Name</label>
+                                        <input type="text" name="last_name" class="form-control" value="{{ request.form.last_name }}" required>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label class="bmd-label-floating">Email Address</label>
+                                        <input type="email" name="email_address" class="form-control" value="{{ request.form.email_address }}" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label class="bmd-label-floating">Subjects Taught</label>
+                                        <input type="text" name="subjects_taught" class="form-control" value="{{ request.form.subjects_taught }}">
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <button type="submit" class="btn btn-login float-right" style="background-color:#4BD1A0;">Add Teacher</button>
+                                </form>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color:#ef5350;">Close</button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12">
@@ -235,7 +431,7 @@
                                     <thead class="text-success">
                                       <th>Subject ID</th>
                                       <th>Name</th>
-                                      <th>Description</th>
+                                      <th width="25%">Description</th>
                                       <th>Teacher</th>
                                       <th>Major Students</th>
                                       <th>Minor Students</th>
@@ -262,15 +458,51 @@
                                               {% endfor %}
                                             </td>
                                             <td>
-                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
-                                                  <a href="{{ url_for('login') }}">
+                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs" data-toggle="modal" data-target="#edit-subject-modal">
                                                     <i class="material-icons" style="color: purple;">edit</i>
-                                                  </a>
                                                 </button>
+                                                <div class="modal fade" id="edit-subject-modal" role="dialog">
+                                                  <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                      <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Edit Subject</h4>
+                                                      </div>
+                                                      <div class="modal-body">
+                                                        <form class="login-form" action="{{ url_for('edit_subject', id=subject.subject_id) }}" method="post" style="padding-right: 30px !important; padding-left: 30px !important;">
+                                                          <div class="row">
+                                                            <div class="col-md-6">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">Name</label>
+                                                                <input type="text" name="name" class="form-control" value="{{ subject.name }}">
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                              <div class="form-group">
+                                                                <label class="bmd-label-floating">Teacher ID</label>
+                                                                <input type="text" name="teacher_id" class="form-control" value="{{ subject.teacher_id }}">
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                          <div class="col-md-12">
+                                                            <div class="form-group">
+                                                              <label class="bmd-label-floating">Description</label>
+                                                              <textarea name="description" class="form-control" maxlength=150>{{ subject.description }}</textarea>
+                                                            </div>
+                                                          </div>
+                                                          <button type="submit" class="btn btn-login float-right" data-background-color="main">Edit Subject</button>
+                                                        </form>
+                                                      </div>
+                                                      <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal" data-background-color="red">Close</button>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
                                             </td>
                                             <td>
                                                 <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
-                                                  <a href="{{ url_for('login') }}">
+                                                  <a href="{{ url_for('delete_subject', id=subject.subject_id) }}">
                                                     <i class="material-icons" style="color: red;">delete_forever</i>
                                                   </a>
                                                 </button>
@@ -282,7 +514,46 @@
                               {% else %}
                                 <p> There are currently no subjects in the database. </p>
                               {% endif %}
+                              <button class="btn" style="background-color: #ef5350;" data-toggle="modal" data-target="#add-subject-modal"><i class="material-icons">add_box</i> Add Subject</button>
                             </div>
+                        </div>
+                        <div class="modal fade" id="add-subject-modal" role="dialog">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Add Subject</h4>
+                              </div>
+                              <div class="modal-body">
+                                <form class="login-form" action="{{ url_for('add_subject') }}" method="post" style="padding-right: 30px !important; padding-left: 30px !important;">
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label class="bmd-label-floating">Name</label>
+                                        <input type="text" name="name" class="form-control" value="{{ request.form.name }}" required>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="form-group">
+                                        <label class="bmd-label-floating">Teacher ID</label>
+                                        <input type="text" name="teacher_id" class="form-control" value="{{ request.form.teacher_id }}">
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label class="bmd-label-floating">Description</label>
+                                      <textarea name="description" class="form-control" value="{{ request.form.description }}" maxlength=150 required></textarea>
+                                    </div>
+                                  </div>
+                                  <button type="submit" class="btn btn-login float-right" style="background-color:#4BD1A0;">Add Subject</button>
+                                </form>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color:#ef5350;">Close</button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                     </div>
                 </div>
