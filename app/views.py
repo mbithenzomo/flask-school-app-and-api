@@ -11,7 +11,7 @@ from app.models import Student, Teacher, Subject, User
 if os.getenv("ENVIRONMENT") == "development":
     path = "http://127.0.0.1:5000"
 else:
-    path = "https://flaskschoolapp.pythonanywhere.com"
+    path = "https://flask-school-app.herokuapp.com"
 
 
 def create_admin_user():
@@ -31,7 +31,7 @@ def get_token():
              "password": "admin1234"}
     response = requests.post(path + "/api/v1/auth/login",
                              data=admin)
-    output = json.loads(response.text.encode('utf-8'))
+    output = json.loads(response.text)
     token = output["token"]
     return {"Authorization": token}
 
@@ -44,7 +44,7 @@ def login():
                 "password": request.form["password"]}
         response = requests.post(path + "/api/v1/auth/login",
                                  data=user)
-        output = json.loads(response.text.encode('utf-8'))
+        output = json.loads(response.text)
         if output.get("error"):
             error = output["error"]
         else:
@@ -87,7 +87,7 @@ def add_student():
         response = requests.post(path + "/api/v1/students",
                                  data=student,
                                  headers=get_token())
-        output = json.loads(response.text.encode('utf-8'))
+        output = json.loads(response.text)
         if output.get("error"):
             flash(output["error"], "error")
         else:
@@ -113,7 +113,7 @@ def edit_student(id):
             response = requests.put(path + "/api/v1/students/" + id,
                                     data=student,
                                     headers=get_token())
-            output = json.loads(response.text.encode('utf-8'))
+            output = json.loads(response.text)
             if output.get("error"):
                 flash(output["error"], "error")
             else:
@@ -135,7 +135,7 @@ def delete_student(id):
         create_admin_user()
         response = requests.delete(path + "/api/v1/students/" + id,
                                    headers=get_token())
-        output = json.loads(response.text.encode('utf-8'))
+        output = json.loads(response.text)
         if output.get("error"):
             flash(output["error"], "error")
         else:
@@ -161,7 +161,7 @@ def add_teacher():
         response = requests.post(path + "/api/v1/teachers",
                                  data=teacher,
                                  headers=get_token())
-        output = json.loads(response.text.encode('utf-8'))
+        output = json.loads(response.text)
         if output.get("error"):
             flash(output["error"], "error")
         else:
@@ -186,7 +186,7 @@ def edit_teacher(id):
             response = requests.put(path + "/api/v1/teachers/" + id,
                                     data=teacher,
                                     headers=get_token())
-            output = json.loads(response.text.encode('utf-8'))
+            output = json.loads(response.text)
             if output.get("error"):
                 flash(output["error"], "error")
             else:
@@ -208,7 +208,7 @@ def delete_teacher(id):
         create_admin_user()
         response = requests.delete(path + "/api/v1/teachers/" + id,
                                    headers=get_token())
-        output = json.loads(response.text.encode('utf-8'))
+        output = json.loads(response.text)
         if output.get("error"):
             flash(output["error"], "error")
         else:
@@ -233,7 +233,7 @@ def add_subject():
         response = requests.post(path + "/api/v1/subjects",
                                  data=subject,
                                  headers=get_token())
-        output = json.loads(response.text.encode('utf-8'))
+        output = json.loads(response.text)
         if output.get("error"):
             flash(output["error"], "error")
         else:
@@ -258,7 +258,7 @@ def edit_subject(id):
             response = requests.put(path + "/api/v1/subjects/" + id,
                                     data=subject,
                                     headers=get_token())
-            output = json.loads(response.text.encode('utf-8'))
+            output = json.loads(response.text)
             if output.get("error"):
                 flash(output["error"], "error")
             else:
@@ -280,7 +280,7 @@ def delete_subject(id):
         create_admin_user()
         response = requests.delete(path + "/api/v1/subjects/" + id,
                                    headers=get_token())
-        output = json.loads(response.text.encode('utf-8'))
+        output = json.loads(response.text)
         if output.get("error"):
             flash(output["error"], "error")
         else:

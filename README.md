@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/mbithenzomo/flask-school-app-and-api.svg?branch=master)](https://travis-ci.org/mbithenzomo/flask-school-app-and-api
-[![Code Health](https://landscape.io/github/mbithenzomo/flask-school-app-and-api/master/landscape.svg?style=flat)]
+[![Build Status](https://travis-ci.org/mbithenzomo/flask-school-app-and-api.svg?branch=master)](https://travis-ci.org/mbithenzomo/flask-school-app-and-api)
+[![Code Health](https://landscape.io/github/mbithenzomo/flask-school-app-and-api/master/landscape.svg?style=flat)](https://landscape.io/github/mbithenzomo/flask-school-app-and-api/master)
 
 # School App and API
 This is a Flask app with an API layer. It has the following properties:
@@ -85,7 +85,7 @@ Updating a student:
 
 ## Web App
 
-The app has a web-based interface and can be accessed [here](http://flaskschoolapp.pythonanywhere.com). A sample user has already been created with the following credentials:
+The app has a web-based interface and can be accessed [here](https://flask-school-app.herokuapp.com/). A sample user has already been created with the following credentials:
 
 ```
 username: testuser
