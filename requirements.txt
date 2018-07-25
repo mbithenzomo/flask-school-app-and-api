@@ -6,12 +6,14 @@ click==6.7
 coverage==4.5.1
 Flask==1.0.2
 Flask-HTTPAuth==3.2.4
+Flask-Login==0.4.1
 Flask-Migrate==2.2.1
 Flask-RESTful==0.3.6
 Flask-Script==2.0.6
 Flask-SQLAlchemy==2.3.2
 Flask-Testing==0.7.1
 funcsigs==1.0.2
+gunicorn==19.9.0
 idna==2.7
 itsdangerous==0.24
 Jinja2==2.10

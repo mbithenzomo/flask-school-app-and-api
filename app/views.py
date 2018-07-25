@@ -3,6 +3,7 @@ import os
 import requests
 
 from flask import flash, redirect, render_template, request, url_for
+from flask_login import login_required, login_user, logout_user
 
 from app import app, db
 from app.models import Student, Teacher, Subject, User
@@ -47,6 +48,9 @@ def login():
         if output.get("error"):
             error = output["error"]
         else:
+            admin_user_id = output.get("user_id")
+            admin_user = User.query.get(int(admin_user_id))
+            login_user(admin_user)
             return redirect(url_for('dashboard'))
 
     return render_template('login.html', title='Login', error=error)
@@ -54,11 +58,13 @@ def login():
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
+    logout_user()
     message = "Successfully logged out."
     return render_template('login.html', title='Login', message=message)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
 def dashboard():
     students = Student.query.all()
     teachers = Teacher.query.all()
@@ -69,6 +75,7 @@ def dashboard():
 
 
 @app.route('/add-student', methods=['GET', 'POST'])
+@login_required
 def add_student():
     if request.method == 'POST':
         create_admin_user()
@@ -93,6 +100,7 @@ def add_student():
 
 
 @app.route('/edit-student/<string:id>', methods=['GET', 'POST'])
+@login_required
 def edit_student(id):
     student = Student.query.filter_by(student_id=id).first()
     if student:
@@ -121,6 +129,7 @@ def edit_student(id):
 
 
 @app.route('/delete-student/<string:id>', methods=['GET', 'POST'])
+@login_required
 def delete_student(id):
     student = Student.query.filter_by(student_id=id).first()
     if student:
@@ -142,6 +151,7 @@ def delete_student(id):
 
 
 @app.route('/add-teacher', methods=['GET', 'POST'])
+@login_required
 def add_teacher():
     if request.method == 'POST':
         create_admin_user()
@@ -165,6 +175,7 @@ def add_teacher():
 
 
 @app.route('/edit-teacher/<string:id>', methods=['GET', 'POST'])
+@login_required
 def edit_teacher(id):
     teacher = Teacher.query.filter_by(staff_id=id).first()
     if teacher:
@@ -193,6 +204,7 @@ def edit_teacher(id):
 
 
 @app.route('/delete-teacher/<string:id>', methods=['GET', 'POST'])
+@login_required
 def delete_teacher(id):
     teacher = Teacher.query.filter_by(staff_id=id).first()
     if teacher:
@@ -214,6 +226,7 @@ def delete_teacher(id):
 
 
 @app.route('/add-subject', methods=['GET', 'POST'])
+@login_required
 def add_subject():
     if request.method == 'POST':
         create_admin_user()
@@ -236,6 +249,7 @@ def add_subject():
 
 
 @app.route('/edit-subject/<string:id>', methods=['GET', 'POST'])
+@login_required
 def edit_subject(id):
     subject = Subject.query.filter_by(subject_id=id).first()
     if subject:
@@ -262,6 +276,7 @@ def edit_subject(id):
 
 
 @app.route('/delete-subject/<string:id>', methods=['GET', 'POST'])
+@login_required
 def delete_subject(id):
     subject = Subject.query.filter_by(subject_id=id).first()
     if subject:
