@@ -34,6 +34,14 @@ Install the required packages:
 pip install -r requirements.txt
 ```
 
+Create a `.env` file with the following keys:
+```
+SECRET_KEY
+DATABASE_UR
+DATABASE_NAME
+TEST_DATABASE_URI
+```
+
 Initialize, migrate, and upgrade the database:
 ```
 python manage.py db init
