@@ -32,6 +32,12 @@
 <script>
 $(document).ready(function(){
     $(".data-tables").hide();
+    $("#add-student").hide();
+    $("#add-student-button").hide();
+    $("#add-teacher").hide();
+    $("#add-teacher-button").hide();
+    $("#add-subject").hide();
+    $("#add-subject-button").hide();
     $("#toggle-sidebar").click(function(){
       if ($(".sidebar").is(":visible")) {
         $(".sidebar").hide();
@@ -48,6 +54,12 @@ $(document).ready(function(){
         $(".card-stats").show();
         $("#dashboard").show();
         $("#dashboard-wallpaper").show();
+        $("#add-student").hide();
+        $("#add-student-button").hide();
+        $("#add-teacher").hide();
+        $("#add-teacher-button").hide();
+        $("#add-subject").hide();
+        $("#add-subject-button").hide();
     });
     $("#menu-students").click(function(){
         $("li").removeClass("active");
@@ -57,6 +69,12 @@ $(document).ready(function(){
         $(".card-stats").hide();
         $("#dashboard").hide();
         $("#dashboard-wallpaper").hide();
+        $("#add-student").hide();
+        $("#add-student-button").show();
+        $("#add-teacher").hide();
+        $("#add-teacher-button").hide();
+        $("#add-subject").hide();
+        $("#add-subject-button").hide();
     });
     $("#menu-teachers").click(function(){
         $("li").removeClass("active");
@@ -66,6 +84,12 @@ $(document).ready(function(){
         $(".card-stats").hide();
         $("#dashboard").hide();
         $("#dashboard-wallpaper").hide();
+        $("#add-student").hide();
+        $("#add-student-button").hide();
+        $("#add-teacher").hide();
+        $("#add-teacher-button").show();
+        $("#add-subject").hide();
+        $("#add-subject-button").hide();
     });
     $("#menu-subjects").click(function(){
         $("li").removeClass("active");
@@ -75,8 +99,39 @@ $(document).ready(function(){
         $(".card-stats").hide();
         $("#dashboard").hide();
         $("#dashboard-wallpaper").hide();
+        $("#add-student").hide();
+        $("#add-student-button").hide();
+        $("#add-teacher").hide();
+        $("#add-teacher-button").hide();
+        $("#add-subject").hide();
+        $("#add-subject-button").show();
+    });
+    $("#add-student-button").click(function(){
+        $("#add-student").show();
+        $("#add-student-button").hide();
+    });
+    $("#cancel-add-student-button").click(function(){
+        $("#add-student").hide();
+        $("#add-student-button").show();
+    });
+    $("#add-teacher-button").click(function(){
+        $("#add-teacher").show();
+        $("#add-teacher-button").hide();
+    });
+    $("#cancel-add-teacher-button").click(function(){
+        $("#add-teacher").hide();
+        $("#add-teacher-button").show();
+    });
+    $("#add-subject-button").click(function(){
+        $("#add-subject").show();
+        $("#add-subject-button").hide();
+    });
+    $("#cancel-add-subject-button").click(function(){
+        $("#add-subject").hide();
+        $("#add-subject-button").show();
     });
 });
 </script>
+
 
 </html>
