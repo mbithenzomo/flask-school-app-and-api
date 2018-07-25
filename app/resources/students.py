@@ -143,6 +143,12 @@ class StudentAPI(Resource):
                                        minors.split(',')]
                         # Append new minors into list
                         for subject_id in minors_list:
+                            print ">>>>>>>>>>>>>>>>>>"
+                            print ">>>>>>>>>>>>>>>>>>"
+                            print ">>>>>>>>>>>>>>>>>>"
+                            print ">>>>>>>>>>>>>>>>>>"
+                            print ">>>>>>>>>>>>>>>>>>"
+                            print minors_list
                             try:
                                 minor = Subject.query.get(subject_id)
                                 if minor:

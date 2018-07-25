@@ -108,7 +108,6 @@ def edit_student(id):
             create_admin_user()
             student = {"first_name": request.form["first_name"],
                        "last_name": request.form["last_name"],
-                       "email_address": request.form["email_address"],
                        "major_id": request.form["major"],
                        "minors": request.form["minors"]}
             response = requests.put(path + "/api/v1/students/" + id,
@@ -183,9 +182,7 @@ def edit_teacher(id):
             create_admin_user()
             teacher = {"first_name": request.form["first_name"],
                        "last_name": request.form["last_name"],
-                       "email_address": request.form["email_address"],
-                       "major_id": request.form["major"],
-                       "minors": request.form["minors"]}
+                       "subjects_taught": request.form["subjects_taught"]}
             response = requests.put(path + "/api/v1/teachers/" + id,
                                     data=teacher,
                                     headers=get_token())
