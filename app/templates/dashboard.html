@@ -58,7 +58,7 @@
             </div>
         </nav>
         <div class="content">
-            {% with messages = get_flashed_messages(with_categories=true) %}
+          {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
                 {% for category, message in messages %}
                   {% if category == 'error' %}
@@ -129,7 +129,7 @@
                                       <th>Last Name</th>
                                       <th>Email Address</th>
                                       <th>Major</th>
-                                      <th>Minors</th>
+                                      <th width="30%">Minors</th>
                                       <th>Edit</th>
                                       <th>Delete</th>
                                     </thead>
@@ -149,14 +149,14 @@
                                             </td>
                                             <td>
                                                 <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
-                                                  <a href="{{ url_for('login') }}">
+                                                  <a href="{{ url_for('edit_student', id=student.student_id) }}">
                                                     <i class="material-icons" style="color: purple;">edit</i>
                                                   </a>
                                                 </button>
                                             </td>
                                             <td>
                                                 <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
-                                                  <a href="{{ url_for('login') }}">
+                                                  <a href="{{ url_for('delete_student', id=student.student_id) }}">
                                                     <i class="material-icons" style="color: red;">delete_forever</i>
                                                   </a>
                                                 </button>
@@ -168,7 +168,52 @@
                               {% else %}
                                 <p> There are currently no students in the database. </p>
                               {% endif %}
+                              <button class="btn" style="background-color: #ff9800;" id="add-student-button"><i class="material-icons">add_box</i> Add Student</button>
                             </div>
+                        </div>
+                        <div class="col-md-6 col-md-offset-3">
+                          <div class="card" id="add-student">
+                            <div class="card-body">
+                              <form class="login-form" action="{{ url_for('add_student') }}" method="post" style="padding-right: 30px !important; padding-left: 30px !important;">
+                                <div class="row">
+                                  <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label class="bmd-label-floating">First Name</label>
+                                      <input type="text" name="first_name" class="form-control" value="{{ request.form.first_name }}" required>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label class="bmd-label-floating">Last Name</label>
+                                      <input type="text" name="last_name" class="form-control" value="{{ request.form.last_name }}" required>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label class="bmd-label-floating">Email Address</label>
+                                      <input type="email" name="email_address" class="form-control" value="{{ request.form.email_address }}" required>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-5">
+                                    <div class="form-group">
+                                      <label class="bmd-label-floating">Major</label>
+                                      <input type="text" name="major" class="form-control" value="{{ request.form.major }}">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-7">
+                                    <div class="form-group">
+                                      <label class="bmd-label-floating">Minors</label>
+                                      <input type="text" name="minors" class="form-control" value="{{ request.form.minors }}">
+                                    </div>
+                                  </div>
+                                </div>
+                                <button type="submit" class="btn btn-login float-right" data-background-color="main">Add Student</button>
+                                <button class="btn btn-login float-right" data-background-color="red" id="cancel-add-student-button">Cancel</button>
+                              </form>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -209,7 +254,7 @@
                                             </td>
                                             <td>
                                                 <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
-                                                  <a href="{{ url_for('login') }}">
+                                                  <a href="{{ url_for('delete_teacher', id=teacher.staff_id) }}">
                                                     <i class="material-icons" style="color: red;">delete_forever</i>
                                                   </a>
                                                 </button>
@@ -219,10 +264,49 @@
                                     </tbody>
                                 </table>
                               {% else %}
-                                  <p> There are currently no teachers in the database. </p>
-                                {% endif %}
+                                <p> There are currently no teachers in the database. </p>
+                              {% endif %}
+                              <button class="btn" style="background-color: #ab47bc;" id="add-teacher-button"><i class="material-icons">add_box</i> Add Teacher</button>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-6 col-md-offset-3">
+                      <div class="card" id="add-teacher">
+                        <div class="card-body">
+                          <form class="login-form" action="{{ url_for('add_teacher') }}" method="post" style="padding-right: 30px !important; padding-left: 30px !important;">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label class="bmd-label-floating">First Name</label>
+                                  <input type="text" name="first_name" class="form-control" value="{{ request.form.first_name }}" required>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label class="bmd-label-floating">Last Name</label>
+                                  <input type="text" name="last_name" class="form-control" value="{{ request.form.last_name }}" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label class="bmd-label-floating">Email Address</label>
+                                  <input type="email" name="email_address" class="form-control" value="{{ request.form.email_address }}" required>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label class="bmd-label-floating">Subjects Taught</label>
+                                  <input type="text" name="subjects_taught" class="form-control" value="{{ request.form.subjects_taught }}">
+                                </div>
+                              </div>
+                            </div>
+                            <button type="submit" class="btn btn-login float-right" data-background-color="main">Add Teacher</button>
+                            <button class="btn btn-login float-right" data-background-color="red" id="cancel-add-teacher-button">Cancel</button>
+                          </form>
+                        </div>
+                      </div>
                     </div>
                     <div class="col-lg-12 col-md-12">
                         <div class="card data-tables" id="subjects-card">
@@ -270,7 +354,7 @@
                                             </td>
                                             <td>
                                                 <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
-                                                  <a href="{{ url_for('login') }}">
+                                                  <a href="{{ url_for('delete_subject', id=subject.subject_id) }}">
                                                     <i class="material-icons" style="color: red;">delete_forever</i>
                                                   </a>
                                                 </button>
@@ -282,8 +366,39 @@
                               {% else %}
                                 <p> There are currently no subjects in the database. </p>
                               {% endif %}
+                              <button class="btn" style="background-color: #ef5350;" id="add-subject-button"><i class="material-icons">add_box</i> Add Subject</button>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-6 col-md-offset-3">
+                      <div class="card" id="add-subject">
+                        <div class="card-body">
+                          <form class="login-form" action="{{ url_for('add_subject') }}" method="post" style="padding-right: 30px !important; padding-left: 30px !important;">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label class="bmd-label-floating">Name</label>
+                                  <input type="text" name="name" class="form-control" value="{{ request.form.name }}" required>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <label class="bmd-label-floating">Teacher ID</label>
+                                  <input type="text" name="teacher_id" class="form-control" value="{{ request.form.teacher_id }}">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label class="bmd-label-floating">Description</label>
+                                <textarea name="description" class="form-control" value="{{ request.form.description }}" maxlength=150 required></textarea>
+                              </div>
+                            </div>
+                            <button type="submit" class="btn btn-login float-right" data-background-color="main">Add Subject</button>
+                            <button class="btn btn-login float-right" data-background-color="red" id="cancel-add-subject-button">Cancel</button>
+                          </form>
+                        </div>
+                      </div>
                     </div>
                 </div>
             </div>
