@@ -142,24 +142,20 @@ class StudentAPI(Resource):
                         minors_list = [minor.strip() for minor in
                                        minors.split(',')]
                         # Append new minors into list
-                        for subject_id in minors_list:
-                            print ">>>>>>>>>>>>>>>>>>"
-                            print ">>>>>>>>>>>>>>>>>>"
-                            print ">>>>>>>>>>>>>>>>>>"
-                            print ">>>>>>>>>>>>>>>>>>"
-                            print ">>>>>>>>>>>>>>>>>>"
-                            print minors_list
-                            try:
-                                minor = Subject.query.get(subject_id)
-                                if minor:
-                                    student.minors.append(minor)
-                                else:
-                                    return {"error": "One or more subject "
-                                            "IDs you entered is invalid."}, 400
-                            except:
-                                return {"error": "The minors field should "
-                                        "only contain subject IDs separated "
-                                        "by a comma."}, 400
+                        if minors_list != [u'']:
+                            for subject_id in minors_list:
+                                try:
+                                    minor = Subject.query.get(subject_id)
+                                    if minor:
+                                        student.minors.append(minor)
+                                    else:
+                                        return {"error": "One or more subject "
+                                                "IDs you entered is "
+                                                "invalid."}, 400
+                                except:
+                                    return {"error": "The minors field should "
+                                            "only contain subject IDs "
+                                            "separated by a comma."}, 400
                     elif field == "email_address":
                         return {"error": "You can't update the email address "
                                 "field."}, 400

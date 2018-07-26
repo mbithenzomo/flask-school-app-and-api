@@ -71,7 +71,7 @@
                     <button type="button" aria-hidden="true" class="close" onclick="$('.alert').hide();">×</button>
                     <i data-notify="icon" class="material-icons">add_alert</i>
                     <span data-notify="message">
-                      <b> {{ message }}
+                      <b> {{ message }} </b>
                     </span>
                   </div>
                 {% endfor %}
@@ -148,10 +148,10 @@
                                               {% endfor %}
                                             </td>
                                             <td>
-                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs" data-toggle="modal" data-target="#edit-student-modal">
+                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs" data-toggle="modal" data-target="#edit-student-{{ student.student_id }}-modal">
                                                   <i class="material-icons" style="color: purple;">edit</i>
                                                 </button>
-                                                <div class="modal fade" id="edit-student-modal" role="dialog">
+                                                <div class="modal fade" id="edit-student-{{ student.student_id }}-modal" role="dialog">
                                                   <div class="modal-dialog">
                                                     <div class="modal-content">
                                                       <div class="modal-header">
@@ -306,10 +306,10 @@
                                               {% endfor %}
                                             </td>
                                             <td>
-                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs" data-toggle="modal" data-target="#edit-teacher-modal">
+                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs" data-toggle="modal" data-target="#edit-teacher-{{ teacher.staff_id }}-modal">
                                                   <i class="material-icons" style="color: purple;">edit</i>
                                                 </button>
-                                                <div class="modal fade" id="edit-teacher-modal" role="dialog">
+                                                <div class="modal fade" id="edit-teacher-{{ teacher.staff_id }}-modal" role="dialog">
                                                   <div class="modal-dialog">
                                                     <div class="modal-content">
                                                       <div class="modal-header">
@@ -458,10 +458,10 @@
                                               {% endfor %}
                                             </td>
                                             <td>
-                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs" data-toggle="modal" data-target="#edit-subject-modal">
+                                                <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs" data-toggle="modal" data-target="#edit-subject-{{ subject.subject_id }}-modal">
                                                     <i class="material-icons" style="color: purple;">edit</i>
                                                 </button>
-                                                <div class="modal fade" id="edit-subject-modal" role="dialog">
+                                                <div class="modal fade" id="edit-subject-{{ subject.subject_id }}-modal" role="dialog">
                                                   <div class="modal-dialog">
                                                     <div class="modal-content">
                                                       <div class="modal-header">

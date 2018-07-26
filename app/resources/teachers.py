@@ -135,18 +135,21 @@ class TeacherAPI(Resource):
                         subjects_taught_list = [subject.strip() for subject in
                                                 subjects_taught.split(',')]
                         # Append new subjects into list
-                        for subject_id in subjects_taught_list:
-                            try:
-                                subject = Subject.query.get(subject_id)
-                                if subject:
-                                    teacher.subjects_taught.append(subject)
-                                else:
-                                    return {"error": "One or more subject "
-                                            "IDs you entered is invalid."}, 400
-                            except:
-                                return {"error": "The subjects_taught field "
-                                        "should only contain subject IDs "
-                                        "separated by a comma."}, 400
+                        if subjects_taught_list != [u'']:
+                            for subject_id in subjects_taught_list:
+                                try:
+                                    subject = Subject.query.get(subject_id)
+                                    if subject:
+                                        teacher.subjects_taught.append(subject)
+                                    else:
+                                        return {"error": "One or more subject "
+                                                "IDs you entered is invalid."},
+                                        400
+                                except:
+                                    return {"error": "The subjects_taught "
+                                            "field should only contain "
+                                            "subject IDs separated by a "
+                                            "comma."}, 400
                     elif field == "email_address":
                         return {"error": "You can't update the email address "
                                 "field."}, 400

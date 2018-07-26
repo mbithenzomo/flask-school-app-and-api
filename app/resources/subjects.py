@@ -76,7 +76,8 @@ class SubjectListAPI(Resource):
         if teacher_id:
             teacher = Teacher.query.filter_by(staff_id=teacher_id).first()
             if not teacher:
-                return {"error": "The teacher ID you entered is invalid."}, 400
+                return {"error": "The teacher ID you entered is invalid."},
+                400
             else:
                 subject.teacher = teacher
 
@@ -116,11 +117,14 @@ class SubjectAPI(Resource):
                 if args[field] is not None:
                     if field == "teacher_id":
                         teacher_id = args["teacher_id"]
-                        teacher = Teacher.query.filter_by(
-                            staff_id=teacher_id).first()
-                        if not teacher:
-                            return {"error": "The teacher ID you entered "
-                                    "is invalid."}, 400
+                        if teacher_id.startswith("TC"):
+                            teacher = Teacher.query.filter_by(
+                                staff_id=teacher_id).first()
+                            if not teacher:
+                                return {"error": "The teacher ID you entered "
+                                        "is invalid."}, 400
+                        else:
+                            args["teacher_id"] = None
                     updated_field = args[field]
                     setattr(subject, field, updated_field)
 
