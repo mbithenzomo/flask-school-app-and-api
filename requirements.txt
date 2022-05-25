@@ -23,7 +23,7 @@ mock==2.0.0
 nose2==0.7.4
 pbr==4.2.0
 psycopg2==2.7.5
-PyJWT==1.6.4
+PyJWT==2.4.0
 python-dateutil==2.7.3
 python-dotenv==0.8.2
 python-editor==1.0.3
